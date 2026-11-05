@@ -2,14 +2,9 @@ import AuthenticationError from './authentication-error.js'
 import IAuthenticator from './iauthenticator.js'
 
 export default class GoogleAuthenticator extends IAuthenticator {
-    static responseCounter = 1
-    // A clientId helye a kliens konfigurációjában lesz.
-    static clientId = '628222765645-4vnsga4sigu1l8r12hhgmbhd71f1j4ad.apps.googleusercontent.com'
-
     #authorizePromise = null
     #resolveAuthorize = null
     #rejectAuthorize = null
-    //#responseHandlerName = null
     #authorizeTimer = null
     #isInitialized = false
 
@@ -20,41 +15,10 @@ export default class GoogleAuthenticator extends IAuthenticator {
     #cleanUpAuthorization() {
         clearTimeout(this.#authorizeTimer)
         this.#authorizeTimer = null
-
-        // if (this.#responseHandlerName) {
-        //     delete window[this.#responseHandlerName]
-        //     this.#responseHandlerName = null
-        // }
-
         this.#authorizePromise = null
         this.#resolveAuthorize = null
         this.#rejectAuthorize = null
     }
-
-    // getAuthenticationView() {
-    //     // this.#responseHandlerName = `onGglResponse_${GoogleAuthenticator.responseCounter++}`
-    //     // window[this.#responseHandlerName] = response => this.authenticate(response)
-
-    //     return `<b>Kérem, jelentkezzen be az iskolai email címével!</b>
-    //         <div id="gis-container"></div>`
-    // //             class="gsi"
-    // //             data-auto_prompt="false"
-    // //             data-callback="${this.#responseHandlerName}"
-    // //             data-client_id="${GoogleAuthenticator.clientId}"
-    // //             data-context="signin"
-    // //             data-ux_mode="popup"
-    // //             data-itp_support="true">
-    // //         </div>
-
-    // //         <div class="g_id_signin"
-    // //             data-type="standard"
-    // //             data-shape="pill"
-    // //             data-theme="outline"
-    // //             data-text="signin"
-    // //             data-size="medium"
-    // //             data-logo_alignment="left">
-    // //         </div>
-    // }
 
     initializeAuthenticationView(container) {
         if (!this.#isInitialized) {

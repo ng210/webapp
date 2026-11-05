@@ -1,5 +1,5 @@
-import WebComponent from '../web-component.js'
-import ApiClient from '../apiclient/apiclient.js'
+import WebComponent from '../../JsLib/web-component.js'
+import ApiClient from '../../JsLib/apiclient/apiclient.js'
 
 export default class WebApp extends WebComponent {
     static #defaultSettings = {
@@ -13,11 +13,11 @@ export default class WebApp extends WebComponent {
             'content': '.content-view'
         }
     }
-    
+
     #apiClient = null
     get apiClient() { return this.#apiClient }
     #componentApi = null
-    #views = { }
+    #views = {}
     get views() { return this.#views }
     #settings = null
     get settings() { return this.#settings }
@@ -36,9 +36,9 @@ export default class WebApp extends WebComponent {
         }
 
         settings['api-url'] = new URL(settings['api-url'], document.location.href).href,
-        settings['auth-dir'] = new URL(settings['auth-dir'], import.meta.url).href,
-        settings['css'] = new URL(settings['css'], document.location.href).href,
-        settings['template'] = new URL(settings['template'], document.location.href).href
+            settings['auth-dir'] = new URL(settings['auth-dir'], import.meta.url).href,
+            settings['css'] = new URL(settings['css'], document.location.href).href,
+            settings['template'] = new URL(settings['template'], document.location.href).href
 
         super(settings)
         this.#settings = settings
@@ -83,5 +83,42 @@ export default class WebApp extends WebComponent {
     async logout() {
         await this.#apiClient.logout()
         this.update()
+    }
+
+    async loadComponent(tagName) {
+        let component = customElements.get(tagName)
+        if (!component) {
+            component = await this.apiClient.loadModule(`/components/${tagName}`)
+            component = component || customElements.get(tagName)
+            if (!component) {
+                throw new Error(`Could not load component ${tagName}`)
+            }
+            if (!customElements.get(tagName)) {
+                customElements.define(tagName, component)
+            }
+        }
+
+        return component
+    }
+
+    findComponents() {
+        const components = new Set()
+        for (let el of this.shadowRoot.querySelectorAll('*')) {
+            const tagName = element.localName
+
+            if (tagName.includes('-') && !customElements.get(tagName)) {
+                components.add(tagName)
+            }
+
+        }
+        return [...components]
+    }
+
+    async loadComponents() {
+        const components = this.findComponents()
+
+        await Promise.all(
+            components.map(tagName => this.loadComponent(tagName))
+        )
     }
 }

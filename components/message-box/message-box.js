@@ -1,4 +1,7 @@
-import _css from './message-box.css' with { type: 'css' }
+import _css from './message-box.css?inline'
+const _sheet = new CSSStyleSheet()
+_sheet.replaceSync(_css)
+
 const _template = await (async () => {
     let dirPath = import.meta.url.slice(0, import.meta.url.lastIndexOf('/'))
     let path = `${dirPath}/message.template.html`
@@ -79,7 +82,7 @@ export default class MessageBox extends HTMLElement {
     #initializeDOM() {
         const root = this.attachShadow({ mode: 'open' })
         root.append(MessageBox.#template.content.cloneNode(true))
-        root.adoptedStyleSheets = [_css]
+        root.adoptedStyleSheets = [_sheet]
 
         this.#header = root.querySelector('h1')
         this.#body = root.querySelector('div')

@@ -28,20 +28,20 @@ namespace GoogleAuthenticator
             app.UseAuthorization();
 
             #region Auth/Google
-            app.MapPost("/api/auth/google",
+            app.MapPost("/auth/google",
                 (GoogleJwtTokenService tokenService,
                 HttpContext context,
                 GoogleLoginRequest request) => tokenService.GoogleLogin(context.User, request))
                 .AllowAnonymous();
 
-            app.MapDelete("/api/auth/google",
+            app.MapDelete("/auth/google",
                 (GoogleJwtTokenService tokenService,
                 HttpContext context) => tokenService.GoogleLogout(context.User))
                 .RequireAuthorization();
             #endregion
 
             #region User
-            app.MapGet("/api/users/me",
+            app.MapGet("/users/me",
                 (ClaimsPrincipal principal) => Results.Ok(new User
                 {
                     Id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "",
@@ -61,7 +61,7 @@ namespace GoogleAuthenticator
             options.AddPolicy("Frontend", policy =>
             {
                 policy
-                    .WithOrigins([ "http://localhost:5500", "https://localhost:5500" ])
+                    .WithOrigins([ "https://teszt.hbsz.eu", "https://localhost:5500" ])
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });

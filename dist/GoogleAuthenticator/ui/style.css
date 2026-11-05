@@ -1,0 +1,23 @@
+@font-face {
+    font-family: tektur;
+    src: url(./assets/Tektur.ttf);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 12pt;
+    font-family: tektur;
+    text-shadow: 2px 1px 8px #0004;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(at center, #fff, #8c6);
+}

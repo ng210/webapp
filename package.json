@@ -1,0 +1,21 @@
+{
+	"name": "component-build",
+	"version": "1.0.0",
+	"description": "Build components",
+	"type": "module",
+	"scripts": {
+		"dev": "vite --config ./vite.config.js",
+		"build": "node build-components.mjs"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ng210/webapp.git"
+	},
+	"devDependencies": {
+		"vite": "^8.0.0",
+		"vite-plugin-mkcert": "^2.1.0"
+	},
+	"dependencies": {
+		"esbuild": "^0.28.2"
+	}
+}

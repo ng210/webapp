@@ -1,4 +1,6 @@
-import _css from './user-card.css' with {type:'css'}
+import _css from './user-card.css?inline'
+const _sheet = new CSSStyleSheet()
+
 export default class UserCard extends HTMLElement {
     #user = {}
     set user(data) {
@@ -34,7 +36,7 @@ export default class UserCard extends HTMLElement {
 
     #initializeDom() {
         this.#shadow = this.attachShadow({ mode: 'open' })
-        this.#shadow.adoptedStyleSheets = [_css]
+        this.#shadow.adoptedStyleSheets = [_sheet]
         this.#initialized = true
     }
 
