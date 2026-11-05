@@ -1,1 +1,0 @@
-export default class e{#t=null;get client(){return this.#t}constructor(t){this.#t=t}initializeAuthenticationView(t){}async authenticate(t){throw new Error("Not implemented!")}async authorizeRequest(t){throw new Error("Not implemented!")}async clearAuthentication(){throw new Error("Not implemented!")}async getAuthorizationInfo(){throw new Error("Not implemented!")}}

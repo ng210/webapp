@@ -59,7 +59,7 @@ async function copyMinified(source, destination) {
             )
 
             const result = await transform(code, {
-                minify: true,
+                minify: false,  // true,
                 target: 'es2022'
             })
 
@@ -117,7 +117,7 @@ await build({
         copyPublicDir: true,
 
         target: 'es2022',
-        minify: 'esbuild',
+        minify: false,  //'esbuild',
         sourcemap: false
     }
 })
