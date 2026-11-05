@@ -25,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Lib\GoogleIdentification\GoogleIdentification.csproj" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\..\CsLib\GoogleIdentification\GoogleIdentification.csproj" />
   </ItemGroup>
 
 </Project>
