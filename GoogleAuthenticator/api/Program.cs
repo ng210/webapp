@@ -61,7 +61,7 @@ namespace GoogleAuthenticator
             options.AddPolicy("Frontend", policy =>
             {
                 policy
-                    .WithOrigins([ "https://teszt.hbsz.eu", "https://localhost:5500" ])
+                    .WithOrigins([ "https://teszt.hbsz.eu", "http://localhost:5500", "https://localhost:5173"])
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });

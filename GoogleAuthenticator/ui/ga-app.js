@@ -10,19 +10,13 @@ class GoogleAuthenticatorApp extends WebApp {
     async connectedCallback() {
         await super.connectedCallback()
 
+        this.switchView('login')
         try {
-            let user = await this.apiClient.get('/users*me')
-            //await this.loadUserCard(user)
-
-            this.views.content.style.display = ''
-        
+            let user = await this.apiClient.get('users/me')
             console.log('Bejelentkezett felhasználó:', user)
-        
-            //this.views['user-card'].user = user
-        
+            await this.loadUserCard(user)
         } catch (error) {
-            this.views.login.style.display = 'none'
-            this.views.content.style.display = 'none'
+            this.switchView('login')
             await MessageBox.showModal(error.message, 'Hiba', 'Ok')
         }
     }
@@ -33,14 +27,12 @@ class GoogleAuthenticatorApp extends WebApp {
 
         // A komponens példányosítása
         const userCard = document.createElement('user-card')
-
         // Adatok átadása
         userCard.user = user
-
         // Elhelyezés a DOM-ban
-        this.views.userCardContainer.replaceChildren(userCard)
+        this.views.content.replaceChildren(userCard)
+        this.switchView('content')
 
-        this.views['user-card'] = userCard
     }
 
     initializeDom() {

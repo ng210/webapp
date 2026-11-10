@@ -39,13 +39,13 @@ export default class WebApp extends WebComponent {
             settings['auth-dir'] = new URL(settings['auth-dir'], import.meta.url).href,
             settings['css'] = new URL(settings['css'], document.location.href).href,
             settings['template'] = new URL(settings['template'], document.location.href).href
+        console.log(settings['api-url'])
+        console.log(settings['auth-dir'])
+        console.log(settings['css'])
+        console.log(settings['template'])
 
         super(settings)
         this.#settings = settings
-        console.log(this.#settings['api-url'])
-        console.log(this.#settings['auth-dir'])
-        console.log(this.#settings['css'])
-        console.log(this.#settings['template'])
         this.#apiClient = new ApiClient(settings)
         this.#componentApi = settings.componentApi ?? settings.apiUrl + '/components'
         this.#settings = {
@@ -70,6 +70,12 @@ export default class WebApp extends WebComponent {
 
         // handle authentication
         document.addEventListener('login-required', this.#loginRequiredHandler)
+    }
+
+    switchView(viewName) {
+        for (let key in this.#views) {
+            this.#views[key].style.display = key == viewName ? 'block' : 'none'
+        }
     }
 
     update() {

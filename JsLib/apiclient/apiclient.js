@@ -20,7 +20,7 @@ export default class ApiClient extends EventTarget {
 
     static #loadDependency(dependency) {
         if (dependency.type === 'module') {
-            return import(dependency.src)
+            return import(/* @vite-ignore */dependency.src)
         }
 
         return new Promise((resolve, reject) => {
@@ -74,7 +74,7 @@ export default class ApiClient extends EventTarget {
 
         // Authenticator betöltése
         const path = `${this.#options['auth-dir']}/${authConfig.authenticator}`        
-        const { default: Authenticator } = await import(path)
+        const { default: Authenticator } = await import(/* @vite-ignore */ path)
         this.#authenticator = new Authenticator(this)
         if (!(this.#authenticator instanceof IAuthenticator)) {
             throw new Error("Invalid authenticator")
@@ -225,7 +225,7 @@ export default class ApiClient extends EventTarget {
 
     getToken(response) {
         return this.post(
-            '/auth/google',
+            'auth/google',
             response,
             {
                 shouldAuthorize: false,
@@ -234,7 +234,7 @@ export default class ApiClient extends EventTarget {
     }
 
     async logout() {
-        await this.delete('/auth/google')
+        await this.delete('auth/google')
         this.#authenticator.clearAuthentication()
     }
 }

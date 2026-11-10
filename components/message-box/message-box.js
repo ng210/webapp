@@ -1,24 +1,10 @@
-import _css from './message-box.css?inline'
-const _sheet = new CSSStyleSheet()
-_sheet.replaceSync(_css)
+import WebComponent from '../../JsLib/web-component.js'
 
-const _template = await (async () => {
-    let dirPath = import.meta.url.slice(0, import.meta.url.lastIndexOf('/'))
-    let path = `${dirPath}/message.template.html`
-    return fetch(path).then(resp => resp.text())
-})()
-
-export default class MessageBox extends HTMLElement {
+export default class MessageBox extends WebComponent {
 
     static observedAttributes = []
 
     static #counter = 1
-
-    static #template = (() => {
-        const template = document.createElement('template')
-        template.innerHTML = _template
-        return template
-    })()
 
     static #overlay = (() => {
         const overlay = document.createElement('div')
@@ -41,60 +27,34 @@ export default class MessageBox extends HTMLElement {
     #body = null
     #buttons = null
 
-    // Belső állapot elemei és egyéb objektumok (resources)
-    #initialized = false
-    
     constructor() {
-        super()
-        // Az állapot és az objektumok kezdeti értékének beállítása.
-        // Attribútumokat és DOM elemeket ne használj, itt még nem érhetőek el!
+        super({
+            css: import.meta.resolve('./message-box.css'),
+            template: import.meta.resolve('./message.template.html')
+        })
     }
 
-    connectedCallback() {
-        if (!this.#initialized) {
-            // A connectedCallback többször is meghívásra kerülhet,
-            // de a DOM kezdeti beállításait csak egyszer végezzük el!
-            this.#initializeDOM()
-            this.#initialized = true
-        }
-        // A DOM aktualizálása a komponens megjelenését aktualizálja.
-        this.#update()
-    }
 
-    disconnectedCallback() {
-        // A komponensen kívüli objektumok törlése, felszabadítása:
-        // számláló, időzítő, 'observer', eseménykezelők, stb.
-    }
+    // attributeChangedCallback(name, oldValue, newValue) {
+    //     if (oldValue === newValue) return
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        // Csak a tényleges változást kezeljük!
-        if (oldValue === newValue) return
+    //     this.update()
+    // }
 
-        // Az attribútum értéke módosítja a belső állapot részét jelentő változókat.
-        // Ezek a változók függetlenek a DOM-tól, ezért ezeket az attribútumokat
-        // még a DOM kialakítása előtt is feldolgozhatjuk.
+    initializeDom() {
+        super.initializeDom()
 
-        // Vannak attribútumok, amelyek közvetlenül a DOM elemeire hatnak. Ezeket az #update
-        // metódusban kezeljük, ahol a DOM elemek biztosan elérhetőek.
-        this.#update()
-    }
-
-    #initializeDOM() {
-        const root = this.attachShadow({ mode: 'open' })
-        root.append(MessageBox.#template.content.cloneNode(true))
-        root.adoptedStyleSheets = [_sheet]
-
-        this.#header = root.querySelector('h1')
-        this.#body = root.querySelector('div')
-        this.#buttons = [...root.querySelectorAll('button')]
+        this.#header = this.shadowRoot.querySelector('h1')
+        this.#body = this.shadowRoot.querySelector('div')
+        this.#buttons = [...this.shadowRoot.querySelectorAll('button')]
         for (let btn of this.#buttons) {
             btn.innerText = btn.className
             btn.addEventListener('click', event => this.#onClick(event))
         }
     }
 
-    #update() {
-        if (this.#initialized) {
+    update() {
+        if (this.initialized) {
             // DOM elemet értintő attribútum
             const title = this.getAttribute('title') ?? 'Message'
             const text = this.getAttribute('text') ?? 'Text'
@@ -113,7 +73,7 @@ export default class MessageBox extends HTMLElement {
 
     #onClick(event) {
         const cls = event.target.className
-        const ix = Object.keys(this.#buttons).indexOf(cls)
+        const ix = this.#buttons.findIndex(btn => btn.className === cls)
         const response = {
             id: this.id,
             title: this.getAttribute('title'),
@@ -133,7 +93,8 @@ export default class MessageBox extends HTMLElement {
         this.show(false)
     }
 
-    show(isVisible, x = -1, y = -1) {
+    async show(isVisible, x = -1, y = -1) {
+        await this.isInitialized()
         const rect = this.getBoundingClientRect()
         if (x == -1) x = (window.innerWidth - rect.width) / 2
         if (y == -1) y = (window.innerHeight - rect.height) / 2
@@ -148,7 +109,7 @@ export default class MessageBox extends HTMLElement {
         }
     }
 
-    static show(text, title = 'Message', type = 'Ok', x = -1, y = -1) {
+    static async show(text, title = 'Message', type = 'Ok', x = -1, y = -1) {
         const msgBox = document.createElement('message-box')
         msgBox.setAttribute('title', title)
         msgBox.setAttribute('text', text)
@@ -156,16 +117,16 @@ export default class MessageBox extends HTMLElement {
         document.body.appendChild(msgBox)
         msgBox.id = 'mb' + (MessageBox.#counter.toString().padStart(4, '0'))
         MessageBox.#counter++
-        msgBox.show(true, x, y)
+        await msgBox.show(true, x, y)
         return msgBox
     }
 
-    static showModal(text, title = 'Message', type = 'Ok', x = -1, y = -1) {
+    static async showModal(text, title = 'Message', type = 'Ok', x = -1, y = -1) {
         if (MessageBox.#instance != null) {
             MessageBox.#instance.show(false)
         }
         MessageBox.#overlay.style.display = 'block'
-        MessageBox.#instance = MessageBox.show(text, title, type, x, y)
+        MessageBox.#instance = await MessageBox.show(text, title, type, x, y)
         return new Promise(
             resolve => {
                 MessageBox.#resolve = resolve

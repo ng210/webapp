@@ -5,7 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite --config ./vite.config.js",
-		"build": "node build-components.mjs"
+		"build": "node build.mjs",
+		"preview": "vite preview -- --https"
 	},
 	"repository": {
 		"type": "git",

@@ -1,11 +1,12 @@
 import { defineConfig } from 'vite'
-import mkcert from 'vite-plugin-mkcert';
+import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
     build: {
         target: 'es2022',
         minify: 'esbuild',
-        sourcemap: false
+        sourcemap: false,
+        cssMinify: false
     },
     server: {
         https: true

@@ -1,57 +1,41 @@
-import _css from './user-card.css?inline'
-const _sheet = new CSSStyleSheet()
+import WebComponent from '../../JsLib/web-component.js'
 
-export default class UserCard extends HTMLElement {
+export default class UserCard extends WebComponent {
     #user = {}
     set user(data) {
         this.#user = data
-        this.#update()
+        this.update()
     }
     get user() { return this.#user }
 
-    #initialized = false
-    #shadow = null
-
-    static #templatePromise = null
-    async getTemplate() {
-        if (!UserCard.#templatePromise) {
-            let dirPath = import.meta.url.slice(0, import.meta.url.lastIndexOf('/'))
-            let path = `${dirPath}/user-card.template.html`
-            UserCard.#templatePromise = fetch(path).then(resp => resp.text())
-        }
-        return UserCard.#templatePromise
-    }
-
     constructor(user) {
-        super()
+        super({
+            css: import.meta.resolve('./user-card.css'),
+            template: import.meta.resolve('./user-card.template.html')
+        })
+
         this.#user = user??{}
     }
 
-    connectedCallback() {
-        if (!this.#initialized) {
-            this.#initializeDom()
+    initializeDom() {
+        this.attachShadow({ mode: 'open' })
+        this.shadowRoot.adoptedStyleSheets = [this.css]
+    }
+
+    async update() {
+        if (!this.initialized) return
+        if (this.user) {
+            const content = this.templateNode.innerHTML.replace(
+                /{{(\w+)}}/g,
+                (m, key) => {
+                    let value = this.#user[key]??'n.a.'
+                    if (key == 'profileImageUrl' && value == 'n.a.') {
+                        value = 'assets/profil.png'
+                    }
+                    return value
+                })
+            this.shadowRoot.innerHTML = content
         }
-        this.#update()
-    }
-
-    #initializeDom() {
-        this.#shadow = this.attachShadow({ mode: 'open' })
-        this.#shadow.adoptedStyleSheets = [_sheet]
-        this.#initialized = true
-    }
-
-    async #update() {
-        if (!this.#initialized) return
-        const content = (await this.getTemplate()).replaceAll(
-            /{{(\w+)}}/g,
-            (m, key) => {
-                let value = this.#user[key]??'n.a.'
-                if (key == 'profileImageUrl' && value == 'n.a.') {
-                    value = 'assets/profil.png'
-                }
-                return value
-            })
-        this.#shadow.innerHTML = content
     }
 }
 
