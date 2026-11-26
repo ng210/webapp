@@ -1,5 +1,6 @@
 ﻿using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -71,7 +72,6 @@ public sealed class GoogleTokenService : ITokenService
             new(ClaimTypes.NameIdentifier, payload.Subject),
             new(ClaimTypes.Email, payload.Email)
         };
-
         AddClaim(claims, ClaimTypes.Name, payload.Name);
         AddClaim(claims, ClaimTypes.GivenName, payload.GivenName);
         AddClaim(claims, ClaimTypes.Surname, payload.FamilyName);
@@ -93,20 +93,16 @@ public sealed class GoogleTokenService : ITokenService
             claims.Add(new Claim(type, value));
     }
 
-    public static void AddAuthentication(WebApplicationBuilder builder)
+    public static void AddAuthentication(WebApplicationBuilder builder, Func<IEnumerable<Claim>, bool>? checkClaims = null)
     {
         builder.Services.Configure<GoogleTokenOptions>(builder.Configuration.GetSection("GoogleToken"));
 
         var options = builder.Configuration.GetSection("GoogleToken").Get<GoogleTokenOptions>() ??
                         throw new InvalidOperationException("GoogleToken configuration is missing.");
-        builder.Services.AddSingleton(options);
-
-        builder.Services.AddScoped<GoogleTokenService>();
-
-        builder.Services.AddScoped<GoogleTokenService>();
-
-        builder.Services
-            .AddAuthentication(options =>
+        // builder.Services.AddSingleton(options);
+        var service = new GoogleTokenService(options);
+        builder.Services.AddSingleton(service);
+        builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = "GoogleToken";
                 options.DefaultChallengeScheme = "GoogleToken";
@@ -114,5 +110,10 @@ public sealed class GoogleTokenService : ITokenService
             .AddScheme<AuthenticationSchemeOptions, GoogleTokenAuthenticationHandler>(
                 "GoogleToken",
                 options => { });
+    }
+
+    public string CreateToken(ClaimsPrincipal principal, IEnumerable<Claim>? additionalClaims = null)
+    {
+        throw new NotImplementedException();
     }
 }

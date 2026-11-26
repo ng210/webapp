@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -35,11 +36,18 @@ public sealed class ApiTokenService : ITokenService
         ClaimTypes.NameIdentifier
     ];
 
+    Func<IEnumerable<Claim>, bool>? _checkClaims = null;
+    public Func<IEnumerable<Claim>, bool>? CheckClaims
+    {
+        get => _checkClaims;
+        set => _checkClaims = value;
+    }
+
     public ApiTokenService(
-        IOptions<ApiTokenOptions> options,
+        ApiTokenOptions options,
         ApiTokenStore tokenStore)
     {
-        _options = options.Value;
+        _options = options;
         _tokenStore = tokenStore;
     }
 
@@ -113,14 +121,20 @@ public sealed class ApiTokenService : ITokenService
             RequireExpirationTime = true,
             RequireSignedTokens = true
         };
-
         var principal = new JwtSecurityTokenHandler().ValidateToken(
-            token,
-            validationParameters,
-            out _);
+                                token,
+                                validationParameters,
+                                out _);
+
+        if (CheckClaims != null)
+        {
+            if (!CheckClaims([..principal.Claims]))
+            {
+                throw new SecurityTokenException("Custom claim check failed.");
+            }
+        }
 
         var jti = principal.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
-
         if (string.IsNullOrEmpty(jti) || !_tokenStore.Contains(jti))
         {
             throw new SecurityTokenException("Token is not active.");
@@ -129,13 +143,15 @@ public sealed class ApiTokenService : ITokenService
         return Task.FromResult(principal);
     }
 
-    public static void AddAuthentication(WebApplicationBuilder builder)
+    public static void AddAuthentication(WebApplicationBuilder builder, Func<IEnumerable<Claim>, bool>? checkClaims = null)
     {
-        builder.Services.Configure<ApiTokenOptions>(
-            builder.Configuration.GetSection("ApiToken"));
-
-        builder.Services.AddSingleton<ApiTokenStore>();
-        builder.Services.AddSingleton<ApiTokenService>();
+        var options = builder.Configuration.GetSection("ApiToken").Get<ApiTokenOptions>()!;
+        var tokenStore = new ApiTokenStore();
+        var apiTokenService = new ApiTokenService(options, tokenStore)
+        {
+            CheckClaims = checkClaims
+        };
+        builder.Services.AddSingleton(apiTokenService);
 
         builder.Services
             .AddAuthentication()

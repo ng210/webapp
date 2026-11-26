@@ -3,7 +3,7 @@ CREATE TABLE answers (
     id INT AUTO_INCREMENT PRIMARY KEY,
 
     registration_id INT NOT NULL,
-    card_id INT NOT NULL,
+    question_id INT NOT NULL,
 
     answer TEXT NOT NULL,
     submitted_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -11,7 +11,7 @@ CREATE TABLE answers (
     admin_evaluation BOOLEAN DEFAULT NULL,
 
     UNIQUE KEY uq_answers_registration_card
-        (registration_id, card_id),
+        (registration_id, question_id),
 
     CONSTRAINT fk_answers_registration
         FOREIGN KEY (registration_id)
@@ -19,8 +19,8 @@ CREATE TABLE answers (
         ON DELETE RESTRICT,
 
     CONSTRAINT fk_answers_card
-        FOREIGN KEY (card_id)
-        REFERENCES cards(id)
+        FOREIGN KEY (question_id)
+        REFERENCES questions(id)
         ON DELETE RESTRICT
 
 ) ENGINE=InnoDB

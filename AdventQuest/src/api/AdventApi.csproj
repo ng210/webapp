@@ -9,11 +9,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.33" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.12" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Lib\GoogleIdentification\GoogleIdentification.csproj" />
+    <ProjectReference Include="..\..\..\CsLib\ApiTokenServices\ApiTokenServices.csproj" />
+    <ProjectReference Include="..\..\..\CsLib\GoogleTokenServices\GoogleTokenServices.csproj" />
   </ItemGroup>
 
 </Project>

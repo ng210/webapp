@@ -7,6 +7,8 @@ namespace TokenServices
     {
         Task<ClaimsPrincipal> AuthenticateAsync(string token);
 
-        static abstract void AddAuthentication(WebApplicationBuilder builder);
+        static abstract void AddAuthentication(WebApplicationBuilder builder, Func<IEnumerable<Claim>, bool>? checkClaims = null);
+
+        public string CreateToken(ClaimsPrincipal principal, IEnumerable<Claim>? additionalClaims = null);
     }
 }

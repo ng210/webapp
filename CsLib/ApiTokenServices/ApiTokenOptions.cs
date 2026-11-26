@@ -1,4 +1,6 @@
-﻿public sealed class ApiTokenOptions
+﻿using Microsoft.Extensions.Options;
+
+public sealed class ApiTokenOptions
 {
     public string Issuer { get; set; } = "";
     public string Audience { get; set; } = "";

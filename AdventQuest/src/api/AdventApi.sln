@@ -4,8 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.37012.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventApi", "AdventApi.csproj", "{B1142123-F547-42B7-B5D9-182B78DFFD3A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{43BDF9E0-CD34-501A-8B7F-4430854BFC53} = {43BDF9E0-CD34-501A-8B7F-4430854BFC53}
+		{AEB3BAA6-8A08-8D56-3F74-2E492B4C4357} = {AEB3BAA6-8A08-8D56-3F74-2E492B4C4357}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleIdentification", "..\..\Lib\GoogleIdentification\GoogleIdentification.csproj", "{1B6F877F-DC8A-4A49-83D8-320993722F04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenServices", "..\..\..\CsLib\TokenServices\TokenServices.csproj", "{4C42DDB9-979C-C580-8E81-094528371900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTokenServices", "..\..\..\CsLib\ApiTokenServices\ApiTokenServices.csproj", "{AEB3BAA6-8A08-8D56-3F74-2E492B4C4357}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleTokenServices", "..\..\..\CsLib\GoogleTokenServices\GoogleTokenServices.csproj", "{43BDF9E0-CD34-501A-8B7F-4430854BFC53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +25,18 @@ Global
 		{B1142123-F547-42B7-B5D9-182B78DFFD3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1142123-F547-42B7-B5D9-182B78DFFD3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1142123-F547-42B7-B5D9-182B78DFFD3A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1B6F877F-DC8A-4A49-83D8-320993722F04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B6F877F-DC8A-4A49-83D8-320993722F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B6F877F-DC8A-4A49-83D8-320993722F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B6F877F-DC8A-4A49-83D8-320993722F04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C42DDB9-979C-C580-8E81-094528371900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C42DDB9-979C-C580-8E81-094528371900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C42DDB9-979C-C580-8E81-094528371900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C42DDB9-979C-C580-8E81-094528371900}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEB3BAA6-8A08-8D56-3F74-2E492B4C4357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEB3BAA6-8A08-8D56-3F74-2E492B4C4357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEB3BAA6-8A08-8D56-3F74-2E492B4C4357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEB3BAA6-8A08-8D56-3F74-2E492B4C4357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43BDF9E0-CD34-501A-8B7F-4430854BFC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43BDF9E0-CD34-501A-8B7F-4430854BFC53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43BDF9E0-CD34-501A-8B7F-4430854BFC53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43BDF9E0-CD34-501A-8B7F-4430854BFC53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
