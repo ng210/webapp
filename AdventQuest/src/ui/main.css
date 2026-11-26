@@ -1,64 +1,137 @@
-@font-face {
-    font-family: xmas1;
-    src: url(assets/MountainsofChristmas-Bold.ttf)
+@import url('https://fonts.googleapis.com/css2?family=Chewy&family=Fontdiner+Swanky&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Sansation", sans-serif;
 }
 
-* {
-    box-sizing: border-box;
+[hidden] {
+  display: none !important;
 }
 
 html {
-    font-size: 8pt;
-    font-family: xmas1;
+  font-size: 8pt;
+  font-family: xmas1, sans-serif;
+  width: 100%;
+  height: 100%;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    display: grid;
-    grid-template-rows: auto 1fr 4rem;
-    background-color: purple;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: rgb(117, 117, 117);
+  overflow-x: clip;
 }
 
-header {
-    background-color: cyan;
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
-header>h1 {
-    text-align: center;
-    font-size: 3rem;
-    margin: 1rem;
+header{
+    background-color: #270000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 1cqmin;
+    border-bottom: solid #fff 0.4cqmin;
 }
+
+header h1{
+    font-size: calc(1rem + 2dvw);
+}
+
+/*app-menu*/
+
+app-menu{
+    margin-top: 2cqmin;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: calc(1rem + 1dvw);
+    overflow-x: auto;
+}
+
+.menu-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2cqmin;
+    background-color: #600000;
+    flex-grow: 1;
+    cursor: pointer;
+    user-select: none;
+    &:is(:hover,:active,:focus){
+        background-color: #7b0000;
+        box-shadow: inset 0.2cqmin 0.2cqmin 1cqmin #fff, inset -0.2cqmin -0.2cqmin 1cqmin #fff;
+    }
+}
+
+/*app-menu end*/
 
 main {
-    background-color: brown;
+  min-height: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.login-wrapper{
+    background-color: #7b0000;
+    padding: 2cqmin;
+    border-radius: 2cqmin;
+    border: dashed #fff 1cqmin;
+    filter: drop-shadow(1cqmin 1cqmin #600000);
     display: flex;
-    flex-wrap: wrap;
-    align-content: center;
     justify-content: center;
-    gap: 0.5rem;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-wrapper span{
+    font-family: "Fontdiner Swanky", serif;
+}
+
+.login-view {
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0048a1;
+  background-image: url(./assets/funds-christmas-2982479_1280.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-size: calc(1rem + 2dvw);
+  color: #fff;
+}
+
+.content-view {
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-image: url(./assets/advent-app_bg5.jpg);
+  background-size: contain;
+  padding: 4cqmin;
+  gap: 3cqmin;
 }
 
 footer {
-    background-color: skyblue;
-
-}
-
-@media screen and (max-width: 1000px) {
-    html {
-        font-size: 6pt;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    html {
-        font-size: 4pt;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    html {
-        font-size: 6pt;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(1rem + 0.5dvw);
+  background-color: #ffffff;
+  padding-block: 1cqmin;
+  color: #600000;
 }

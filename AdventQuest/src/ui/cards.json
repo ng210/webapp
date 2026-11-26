@@ -1,27 +1,123 @@
 [
-    {
-        "date": "2026.11.20",
-        "id": 14,
-        "state": "open",
-        "image": "krampusz.png",
-        "type": "select",
-        "question": "Hány szarva van a Krampusznak?",
-        "options": "1;3;2;0",
-        "answer":""
-    },
-    {
-        "date": "2026.11.21",
-        "id": 14,
-        "state": "closed",
-        "image": "krampusz.png",
-        "type": "select",
-        "question": "Hány szarva van a Krampusznak?",
-        "options": "1;3;2;0",
-        "answer":"1",
-        "correct":"3"
-    },
-    {
-        "date": "2026.11.22",
-        "state": "locked"
-    }
+  {
+    "date": "2026.12.01",
+    "id": 1,
+    "state": "closed",
+    "image": "https://via.placeholder.com/150/8B0000/FFFFFF?text=Dec.+1",
+    "type": "select",
+    "question": "Hány gyertya található a hagyományos adventi koszorún?",
+    "options": "3;4;5;6",
+    "answer": "4",
+    "correct": "4"
+  },
+  {
+    "date": "2026.12.02",
+    "id": 2,
+    "state": "closed",
+    "image": "https://via.placeholder.com/150/1B5E20/FFFFFF?text=Dec.+2",
+    "type": "select",
+    "question": "Milyen színű a katolikus hagyomány szerinti harmadik adventi gyertya (öröm vasárnapja)?",
+    "options": "Lila;Rózsaszín;Fehér;Piros",
+    "answer": "Lila",
+    "correct": "Rózsaszín"
+  },
+  {
+    "date": "2026.12.03",
+    "id": 3,
+    "state": "closed",
+    "image": "https://via.placeholder.com/150/B71C1C/FFFFFF?text=Dec.+3",
+    "type": "select",
+    "question": "Melyik napon ünnepeljük Mikulást Magyarországon?",
+    "options": "December 5.;December 6.;December 13.;December 24.",
+    "answer": "December 6.",
+    "correct": "December 6."
+  },
+  {
+    "date": "2026.12.04",
+    "id": 4,
+    "state": "closed",
+    "image": "https://via.placeholder.com/150/2E7D32/FFFFFF?text=Dec.+4",
+    "type": "select",
+    "question": "Melyik országból ered a karácsonyfa-állítás hagyománya?",
+    "options": "Németország;Ausztria;Finnország;Lengyelország",
+    "answer": "Finnország",
+    "correct": "Németország"
+  },
+  {
+    "date": "2026.12.05",
+    "id": 5,
+    "state": "closed",
+    "image": "https://via.placeholder.com/150/C62828/FFFFFF?text=Dec.+5",
+    "type": "select",
+    "question": "Mi a hagyományos magyar karácsonyi kalács neve, amelyet mákkal vagy dióval töltenek?",
+    "options": "Kürtőskalács;Bejgli;Zserbó;Flódni",
+    "answer": "Bejgli",
+    "correct": "Bejgli"
+  },
+  {
+    "date": "2026.12.06",
+    "id": 6,
+    "state": "open",
+    "image": "https://via.placeholder.com/150/D84315/FFFFFF?text=Dec.+6",
+    "type": "select",
+    "question": "Melyik növény ága alatt szokás csókot váltani karácsonykor az angolszász hagyomány szerint?",
+    "options": "Magyal;Fagyöngy;Mikulásvirág;Borostyán",
+    "answer": ""
+  },
+  {
+    "date": "2026.12.07",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.08",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.09",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.10",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.11",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.12",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.13",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.14",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.15",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.16",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.17",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.18",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.19",
+    "state": "locked"
+  },
+  {
+    "date": "2026.12.20",
+    "state": "locked"
+  }
 ]

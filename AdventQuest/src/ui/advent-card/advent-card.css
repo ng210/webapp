@@ -1,0 +1,302 @@
+[hidden] {
+  display: none !important;
+}
+
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50cqmin;
+  min-width: 200px;
+  height: 60cqmin;
+  min-height: 220px;
+  padding: 3cqmin !important;
+  border: solid #022d00 1cqmin;
+  border-radius: 2cqmin;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  transform: perspective(1000px) rotateY(0deg);
+  transition: transform 1s ease-in-out;
+
+  &::before {
+    content: "";
+    inset: 0;
+    position: absolute;
+    z-index: -1;
+    border-radius: 0.9cqmin;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    opacity: 1;
+    transition: opacity 0s 0.5s;
+  }
+
+  &::after {
+    content: "";
+    inset: 0;
+    position: absolute;
+    z-index: -1;
+    border-radius: 0.9cqmin;
+    background-image:
+      linear-gradient(rgba(2, 35, 0, 0.55), rgba(2, 35, 0, 0.55)),
+      url(../assets/backside-green1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0s 0.5s;
+  }
+
+  & > * {
+    user-select: none;
+  }
+
+  & > *:not([data-field="date"]) {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0s 0.5s;
+    transform: scaleX(-1);
+    padding: 0;
+    margin: 0;
+    margin-block: 1cqmin;
+  }
+
+  & > [data-field="date"] {
+    opacity: 1;
+    transition: opacity 0s 0.5s;
+  }
+}
+
+:host([data-state="open"]) [data-field="answer"] {
+  display: none;
+}
+
+:host([data-state="open"])::before {
+  background-image:
+    linear-gradient(rgba(0, 200, 0, 0.3), rgba(0, 200, 0, 0.3)),
+    url(../assets/advent-app_bg4.jpg);
+}
+
+:host([data-state="closed"])::before {
+  background-image:
+    linear-gradient(rgba(200, 200, 200, 0.5), rgba(200, 200, 200, 0.5)),
+    url(../assets/advent-app_bg4.jpg);
+}
+
+:host([data-state="locked"]) {
+  cursor: not-allowed;
+}
+
+:host([data-state="locked"])::before {
+  background-image:
+    linear-gradient(rgba(200, 0, 0, 0.3), rgba(200, 0, 0, 0.3)),
+    url(../assets/advent-app_bg4.jpg);
+}
+
+:host(.flipped) {
+  transform: perspective(1000px) rotateY(180deg);
+
+  &::before {
+    opacity: 0;
+  }
+
+  &::after {
+    opacity: 1;
+  }
+
+  & > [data-field="date"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  & > *:not([data-field="date"]) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+[data-field="date"] {
+  font-size: calc(1rem + 3cqmin);
+  position: absolute;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  -webkit-text-stroke: rgb(56, 0, 0) 1px;
+}
+
+.image-wrapper {
+  width: 50%;
+  aspect-ratio: 1 / 1;
+  padding: 1cqmin !important;
+  background-color: #420000;
+  border-radius: 1cqmin;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+[data-field="image"] {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0.6cqmin;
+}
+
+[data-field="question"] {
+  font-family: "Chewy", system-ui;
+  font-size: max(0.95rem, calc(0.5rem + 1.6cqmin));
+  line-height: 1.25;
+  letter-spacing: 0.1cqmin;
+  text-align: justify;
+  text-justify: distribute;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-height: 28%;
+  overflow-y: auto;
+  padding-right: 1cqmin !important;
+  scrollbar-width: thin;
+  scrollbar-color: #e5b84b transparent;
+}
+
+[data-field="options"],
+[data-field="answer"],
+[data-field="correct"] {
+  width: 82%;
+  padding: 1.3cqmin 2.5cqmin;
+  border-radius: 1.5cqmin;
+  font-size: calc(0.55rem + 1.4cqmin);
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.04em;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+[data-field="options"] {
+  color: #fff8e7;
+  border: 0.35cqmin solid #e5b84b;
+  background: linear-gradient(180deg, #a80000 0%, #630000 100%);
+  box-shadow:
+    0 0.6cqmin 1.5cqmin rgba(0, 0, 0, 0.55),
+    inset 0 0.2cqmin 0.3cqmin rgba(255, 230, 150, 0.35);
+  cursor: pointer;
+
+  & option {
+    background-color: #4a0000;
+    color: #fff8e7;
+  }
+
+  &:is(:hover, :focus):not(:disabled) {
+    filter: brightness(1.15);
+    box-shadow:
+      0 0.8cqmin 2cqmin rgba(229, 184, 75, 0.4),
+      inset 0 0.2cqmin 0.4cqmin rgba(255, 255, 255, 0.45);
+    outline: none;
+  }
+
+  :host(.flipped) &:disabled {
+    appearance: none;
+    opacity: 1;
+    background: linear-gradient(180deg, #2b1815 0%, #1d100e 100%);
+    color: #d6c3a5;
+    -webkit-text-fill-color: #d6c3a5;
+    border: 0.3cqmin dashed #8c7043;
+    box-shadow: inset 0 0.4cqmin 1cqmin rgba(0, 0, 0, 0.75);
+    cursor: default;
+  }
+}
+
+[data-field="answer"] {
+  background: rgba(15, 10, 10, 0.65);
+  color: #f3e9d2;
+  border: 0.25cqmin solid rgba(229, 184, 75, 0.45);
+  box-shadow: inset 0 0.2cqmin 0.8cqmin rgba(0, 0, 0, 0.6);
+  &::before {
+    content: "Válaszod: ";
+  }
+}
+
+[data-field="correct"] {
+  background: linear-gradient(
+    180deg,
+    rgba(24, 115, 42, 0.9),
+    rgba(12, 68, 22, 0.95)
+  );
+  color: #e6ffe6;
+  border: 0.3cqmin solid #7be87b;
+  box-shadow:
+    0 0.4cqmin 1.2cqmin rgba(0, 0, 0, 0.45),
+    0 0 1.2cqmin rgba(123, 232, 123, 0.35);
+  &::before {
+    content: "Helyes: ";
+  }
+}
+
+.btSendAnswer {
+  width: 82%;
+  padding: 1.3cqmin 2.5cqmin;
+  border-radius: 1.5cqmin;
+  font-size: calc(0.55rem + 1.4cqmin);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff8e7;
+  background: linear-gradient(180deg, #1b7a2e 0%, #0d4a19 100%);
+  border: 0.35cqmin solid #e5b84b;
+  box-shadow:
+    0 0.6cqmin 1.5cqmin rgba(0, 0, 0, 0.55),
+    inset 0 0.2cqmin 0.3cqmin rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    filter 0.15s ease,
+    box-shadow 0.2s ease;
+
+  &:not(:disabled):is(:hover, :focus) {
+    filter: brightness(1.18);
+    box-shadow:
+      0 0.8cqmin 2cqmin rgba(229, 184, 75, 0.45),
+      inset 0 0.2cqmin 0.4cqmin rgba(255, 255, 255, 0.5);
+    outline: none;
+  }
+
+  &:active:not(:disabled) {
+    filter: brightness(0.92);
+    box-shadow: inset 0 0.4cqmin 1cqmin rgba(0, 0, 0, 0.7);
+  }
+
+  &:disabled {
+    filter: grayscale(1);
+  }
+}
+
+/* Mobil nézet: nagyobb kártyák és olvashatóbb belső tartalom */
+@media (max-width: 600px) {
+  :host {
+    width: 82vw;
+    height: 100vw;
+    min-width: 270px;
+    min-height: 330px;
+    padding: 4.5vw !important;
+  }
+
+  [data-field="date"] {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+  }
+
+  .image-wrapper {
+    width: 58%;
+  }
+
+  [data-field="question"] {
+    font-size: clamp(1rem, 4.2vw, 1.25rem);
+  }
+
+  [data-field="options"],
+  [data-field="answer"],
+  [data-field="correct"],
+  .btSendAnswer {
+    width: 90%;
+    padding: 2.5vw 4vw;
+    font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+  }
+}

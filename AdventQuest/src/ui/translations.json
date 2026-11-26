@@ -1,0 +1,32 @@
+{
+  "hu": {
+    "app-title": "Adventi Quiz",
+    "nav-kezdolap": "Kezdőlap",
+    "nav-eredmenyek": "Eredmények",
+    "nav-kilepes": "Kilépés",
+    "login-greeting": "Ho ho ho!",
+    "login-prompt": "Jelentkezz be kispajtás!",
+    "footer-copyright": "2026. HBSZ",
+    "card-button": "Válasz küldése"
+  },
+  "en": {
+    "app-title": "Advent Quiz",
+    "nav-kezdolap": "Home",
+    "nav-eredmenyek": "Results",
+    "nav-kilepes": "Logout",
+    "login-greeting": "Ho ho ho!",
+    "login-prompt": "Log in, little buddy!",
+    "footer-copyright": "2026. HBSZ",
+    "card-button": "Submit Answer"
+  },
+  "de": {
+    "app-title": "Adventsquiz",
+    "nav-kezdolap": "Startseite",
+    "nav-eredmenyek": "Ergebnisse",
+    "nav-kilepes": "Abmelden",
+    "login-greeting": "Ho ho ho!",
+    "login-prompt": "Melde dich an, kleiner Freund!",
+    "footer-copyright": "2026. HBSZ",
+    "card-button": "Antwort senden"
+  }
+}
