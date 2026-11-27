@@ -73,7 +73,7 @@ class AdventCard extends HTMLElement {
         const opts = String(value)
           .split(";")
           .map((opt) => opt.trim())
-          .filter(Boolean);
+          //.filter(Boolean);
 
         if (!opts.length) continue;
 

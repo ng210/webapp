@@ -7,7 +7,9 @@
     "login-greeting": "Ho ho ho!",
     "login-prompt": "Jelentkezz be kispajtás!",
     "footer-copyright": "2026. HBSZ",
-    "card-button": "Válasz küldése"
+    "card-button": "Válasz küldése",
+    "card-answer": "Válaszod",
+    "card-correct": "Helyes"
   },
   "en": {
     "app-title": "Advent Quiz",
@@ -17,7 +19,9 @@
     "login-greeting": "Ho ho ho!",
     "login-prompt": "Log in, little buddy!",
     "footer-copyright": "2026. HBSZ",
-    "card-button": "Submit Answer"
+    "card-button": "Submit Answer",
+    "card-answer": "Your answer",
+    "card-correct": "Correct"
   },
   "de": {
     "app-title": "Adventsquiz",
@@ -25,8 +29,10 @@
     "nav-eredmenyek": "Ergebnisse",
     "nav-kilepes": "Abmelden",
     "login-greeting": "Ho ho ho!",
-    "login-prompt": "Melde dich an, kleiner Freund!",
+    "login-prompt": "Melde dich an, mein Kleiner!",
     "footer-copyright": "2026. HBSZ",
-    "card-button": "Antwort senden"
+    "card-button": "Antwort senden",
+    "card-answer": "Deine Antwort",
+    "card-correct": "Korrekt"
   }
 }

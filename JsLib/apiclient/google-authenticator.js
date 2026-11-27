@@ -7,9 +7,12 @@ export default class GoogleAuthenticator extends IAuthenticator {
         return this.#clientId
     }
 
-    async initialize({ container = null, clientId = null } = {}) {
+    #language = ''
+
+    async initialize({ container = null, clientId = null, language = '' } = {}) {
         await super.initialize({ container })
         this.#clientId = clientId
+        this.#language = language
     }
 
     async authenticate() {
@@ -28,9 +31,11 @@ export default class GoogleAuthenticator extends IAuthenticator {
                 })
 
                 google.accounts.id.renderButton(this.container, {
-                    theme: 'outline',
-                    size: 'large',
-                    text: 'signin_with'
+                    type: "standard",
+                    theme: "outline",
+                    size: "large",
+                    text: "signin_with",
+                    locale: this.#language
                 })
             } catch (error) {
                 reject(error)

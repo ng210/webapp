@@ -1,7 +1,8 @@
 // #region Fordítások betöltése
-const translations = await fetch(
-  import.meta.resolve("./translations.json"),
-).then((resp) => resp.json());
+// const translations = await fetch(
+//   import.meta.resolve("./translations.json"),
+// ).then((resp) => resp.json());
+import translations from "./translations.json" with { type: 'json' }
 // #endregion
 
 // #region Nyelvváltás kezelése
@@ -34,10 +35,10 @@ document.addEventListener("language-change", (e) => {
 });
 // #endregion
 
-setTimeout(() => {
-  document.dispatchEvent(
-    new CustomEvent("language-change", {
-      detail: { lang: "de" },
-    }),
-  );
-}, 500);
+// setTimeout(() => {
+//   document.dispatchEvent(
+//     new CustomEvent("language-change", {
+//       detail: { lang: appsettings.lang },
+//     }),
+//   );
+// }, 500);
