@@ -16,7 +16,7 @@ namespace AdventApi.Models
         [Column("game_id")]
         public required int GameId { get; set; }
         [Column("question_date")]
-        public required DateOnly QuestionDate { get; set; }
+        public required DateTime QuestionDate { get; set; }
         public string? Title { get; set; }
         [Column("image_path")]
         public string? ImagePath { get; set; }
@@ -26,7 +26,7 @@ namespace AdventApi.Models
         public required string QuestionType { get; set; }
         [Column("options")]
         public string? OptionsText { get; set; }
-        public string[] Options => OptionsText?.Split('\n') ?? [];
+        public string[] Options => OptionsText?.Split(';').Select(s => s.Trim()).ToArray() ?? [];
         [Column("correct_answer")]
         public required string CorrectAnswer { get; set; }
 
@@ -34,6 +34,6 @@ namespace AdventApi.Models
         [ForeignKey(nameof(GameId))]
         public Game? Game { get; set; }
 
-        public ICollection<Answer>? Answers { get; set; }
+        public ICollection<Answer> Answers { get; set; } = [];
     }
 }

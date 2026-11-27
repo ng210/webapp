@@ -1,3 +1,4 @@
+using AdventApi.DTO;
 using AdventApi.Models;
 using AdventApi.Services;
 using GoogleTokenServices;
@@ -124,7 +125,7 @@ app.MapDelete(
 #region Questions
 // GET /questions
 app.MapGet(
-    "/questions",
+    "/cards",
     async (HttpContext httpContext, Context dbContext) =>
     {
         var authId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -144,48 +145,54 @@ app.MapGet(
             return Results.NotFound();
         }
 
-        var lockedDate = DateTime.Now.AddDays(1);
-        var closedDate = DateTime.Now.AddHours(game.PublishDelayHours);
-        var openDate = DateTime.Now;
-
         var data = await dbContext.Questions
                             .Where(q => q.GameId == _gameId)
-                            .Join(
-                                dbContext.Answers
-                                    .Where(a => a.RegistrationId == registration.Id),
-                                q => q.Id,
-                                a => a.QuestionId,
-                                (question, answer) => new { question, answer })
-                            .OrderBy(q => q.question.QuestionDate)
+                            .OrderBy(q => q.QuestionDate)
+                            .Select(q => new
+                            {
+                                Question = q,
+                                Answer = q.Answers
+                                    .FirstOrDefault(a => a.RegistrationId == registration.Id)
+                            })
                             .ToListAsync();
 
-        var questions = data.Select(d =>
+        var cards = data.Select(d =>
         {
-            var date = d.question.QuestionDate.ToDateTime(new TimeOnly(0));
-            var dateText = d.question.QuestionDate.ToString("yyyy-MM-dd");
-            if (date >= lockedDate)
+            var date = d.Question.QuestionDate;
+            var lockedDate = date.AddHours(game.PublishQuestion);
+            var deadlineDate = lockedDate.AddHours(game.DeadlineDelay);
+            var correctedDate = deadlineDate.AddHours(game.PublishAnswerDelay);
+            var card = new Card
             {
-                return new
-                {
-                    date = dateText,
-                    state = "locked"
-                };
-            }
-            if (date >= closedDate)
-            {
-                return new
-                {
-                    date = dateText,
-                    state = "closed"
-                };
-            }
-            return new
-            {
-                date = dateText,
-                state = "open"
+                Date = date.ToString("yyyy.MM.dd"),
+                State = "locked"
             };
+            var q = d.Question;
+
+            if (DateTime.Now < lockedDate)
+            {
+                return card;
+            }
+
+            card.Id = q.Id;
+            card.State = "open";
+            card.Image = "https://via.placeholder.com/150/8B0000/FFFFFF?text=Dec.+1"; // $"/images/{q.ImagePath}";
+            card.Type = "select";   //q.QuestionType;
+            card.Question = q.QuestionText;
+            card.Options = string.Join(';', q.Options);
+            if (DateTime.Now >= deadlineDate || d.Answer != null)
+            {
+                card.Answer = "Baka";   // d.Answer?.AnswerText ?? "";
+                card.State = "closed";
+            }
+            if (DateTime.Now > correctedDate)
+            {
+                card.Correct = q.CorrectAnswer;
+            }
+
+            return card;
         });
-        return Results.Ok(questions);
+        return Results.Ok(cards);
     })
     .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = "ApiToken" });
 #endregion

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2026. Nov 26. 07:28
+-- Létrehozás ideje: 2026. Nov 27. 06:48
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.0.30
 
@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `advent`
 --
+DROP DATABASE IF EXISTS advent;
+CREATE DATABASE advent;
+USE advent;
 
 -- --------------------------------------------------------
 
@@ -47,9 +50,10 @@ CREATE TABLE `games` (
   `name` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
   `asset_path` varchar(100) DEFAULT NULL,
-  `deadline_time` time NOT NULL,
+  `publish_question` int(11) NOT NULL DEFAULT 6,
+  `deadline_delay` int(11) NOT NULL DEFAULT 16,
   `publish_correct_answers` tinyint(1) NOT NULL DEFAULT 1,
-  `publish_delay_hours` int(11) NOT NULL DEFAULT 0,
+  `publish_answer_delay` int(11) NOT NULL DEFAULT 0,
   `registration_mode` varchar(30) NOT NULL DEFAULT 'on_login',
   `is_active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -58,8 +62,8 @@ CREATE TABLE `games` (
 -- A tábla adatainak kiíratása `games`
 --
 
-INSERT INTO `games` (`id`, `name`, `description`, `asset_path`, `deadline_time`, `publish_correct_answers`, `publish_delay_hours`, `registration_mode`, `is_active`) VALUES
-(1, 'Großes Weihnachts-Quiz', 'Großes Weihnachts-Quiz\r\nSprachniveau A1+/A2-\r\n2026.11.30-2026.12.15', '/images', '22:00:00', 1, 8, 'on_login', 0);
+INSERT INTO `games` (`id`, `name`, `description`, `asset_path`, `publish_question`, `deadline_delay`, `publish_correct_answers`, `publish_answer_delay`, `registration_mode`, `is_active`) VALUES
+(1, 'Großes Weihnachts-Quiz', 'Großes Weihnachts-Quiz\r\nSprachniveau A1+/A2-\r\n2026.11.30-2026.12.15', '/images', 6, 16, 1, 8, 'on_login', 0);
 
 -- --------------------------------------------------------
 
@@ -84,18 +88,20 @@ CREATE TABLE `questions` (
 --
 
 INSERT INTO `questions` (`id`, `game_id`, `question_date`, `title`, `image_path`, `question_text`, `question_type`, `options`, `correct_answer`) VALUES
-(13, 1, '2026-11-30', '', '01wbaum.png', 'Wo gab es vor über 400 Jahren die ersten geschmückten Weihnachtsbäume?', 'multiple_choice', 'Im Elsass (eine Region zwischen Deutschland und Frankreich)\nIn England\nIn Italien\nIn Schweden', 'A'),
-(14, 1, '2026-12-01', '', '02zuckerl.png', 'Früher hängte man Äpfel, Nüsse und Süßigkeiten (wie das ungarische Szaloncukor / Salonzuckerl) an den Baum. Heute benutzt man oft glänzende Silberstreifen (Lametta). Was bedeuten diese Streifen?', 'multiple_choice', 'Sterne\nEiszapfen\nKerzen\nSchnee', 'B'),
-(15, 1, '2026-12-02', '', '03nikolaus.png', 'Wann kommt in Deutschland und Österreich der Nikolaus? Und wie heißt sein gruseliger Begleiter in den Alpen?', 'multiple_choice', 'Am 6. Dezember; der Krampus\nAm 24. Dezember; das Christkind\nAm 1. Dezember; der Nussknacker\nAm 6. Januar; der Weihnachtsmann', 'A'),
-(16, 1, '2026-12-03', '', '04zwige.png', 'Am 4. Dezember stellt man Zweige von einem Kirschbaum oder Apfelbaum in eine Vase mit Wasser. Warum macht man das?', 'multiple_choice', 'Man macht daraus einen Tee.\nMan verbrennt sie an Heiligabend.\nWenn die Zweige an Weihnachten blühen, bringen sie Glück.\nSie sind ein Geschenk für den Nikolaus.', 'C'),
-(17, 1, '2026-12-04', '', '05kuchen.png', 'Aus welcher Stadt kommt der bekannte Weihnachtskuchen „Christstollen“? Und wie sieht er aus?', 'multiple_choice', 'Aus München – wie ein hoher Berg\nAus Dresden – wie das Jesuskind in weißen Tüchern\nAus Hamburg – wie ein Schiff\nAus Berlin – wie ein Stern', 'B'),
-(18, 1, '2026-12-07', '', '06pyramide.png', 'Aus welcher Region in Deutschland kommen die „Weihnachtspyramide“ und der Lichterbogen („Schwibbogen“)? Und was zeigt der Bogen?', 'multiple_choice', 'Aus dem Erzgebirge – den Eingang zu einem Bergwerk\nAus dem Schwarzwald – eine große Uhr\nVom Meer – einen Regenbogen\nAus Bayern – ein großes Stadttor', 'A'),
-(19, 1, '2026-12-08', '', '07nussknacker.png', 'Die Nussknacker aus Holz schauen oft sehr streng. Wen zeigen diese Figuren?', 'multiple_choice', 'Kinder aus Märchen\nPiraten und Seeleute\nKönige, Soldaten und Polizisten\nBäcker und Köche', 'C'),
-(20, 1, '2026-12-09', '', '08lebkuchen.png', 'In welchem Land steht das größte Lebkuchenhaus der Welt (ein Nachbau aus dem Film Kevin – Allein zu Haus)?', 'multiple_choice', 'In Deutschland\nIn Schweden\nIn Österreich\nIn den USA', 'D'),
-(21, 1, '2026-12-10', '', '09punsch.png', 'Woher kommt das Wort „Punsch“ (für die Zahl 5, weil das Getränk fünf Zutaten hat)? Und wie heißt der bekannte deutsche Punsch mit brennendem Zucker?', 'multiple_choice', 'Aus Indien; Feuerzangenbowle\nAus Schweden; Glögg\nAus Frankreich; Kakao\nAus Italien; Espresso', 'A'),
-(22, 1, '2026-12-11', '', '10wmarkt.png', 'In welcher Stadt in England gibt es den größten deutschen Weihnachtsmarkt außerhalb von Deutschland und Österreich?', 'multiple_choice', 'In Birmingham („Frankfurt Christmas Market“)\nIn London\nIn Manchester\nIn Liverpool', 'A'),
-(23, 1, '2026-12-14', '', '11rodeln.png', 'Wann und wo wurde das Schlittenfahren (Rodeln) zum offiziellen Sport mit einem großen Rennen?', 'multiple_choice', '1924 in Frankreich\n1896 in Griechenland\n1883 in der Schweiz (in Davos)\n1905 in Österreich', 'C'),
-(24, 1, '2026-12-15', '', '12glück.png', 'Auf dem Weihnachtsmarkt in Nürnberg kauft man kleine, lustige Figuren (zum Beispiel Schornsteinfeger) als Glücksbringer. Woraus sind diese Figuren gemacht?', 'multiple_choice', 'Aus getrockneten Pflaumen (Zwetschgen)\nAus frischen Äpfeln\nAus Orangen\nAus Bananen', 'A');
+(13, 1, '2026-11-30', '', '01wbaum.png', 'Wo gab es vor über 400 Jahren die ersten geschmückten Weihnachtsbäume?', 'multiple_choice', 'Im Elsass (eine Region zwischen Deutschland und Frankreich);In England;In Italien;In Schweden', 'A'),
+(14, 1, '2026-12-01', '', '02zuckerl.png', 'Früher hängte man Äpfel, Nüsse und Süßigkeiten (wie das ungarische Szaloncukor / Salonzuckerl) an den Baum. Heute benutzt man oft glänzende Silberstreifen (Lametta). Was bedeuten diese Streifen?', 'multiple_choice', 'Sterne;Eiszapfen;Kerzen;Schnee', 'B'),
+(15, 1, '2026-12-02', '', '03nikolaus.png', 'Wann kommt in Deutschland und Österreich der Nikolaus? Und wie heißt sein gruseliger Begleiter in den Alpen?', 'multiple_choice', 'Am 6. Dezember; der Krampus;Am 24. Dezember; das Christkind;Am 1. Dezember; der Nussknacker;Am 6. Januar; der Weihnachtsmann', 'A'),
+(16, 1, '2026-12-03', '', '04zwige.png', 'Am 4. Dezember stellt man Zweige von einem Kirschbaum oder Apfelbaum in eine Vase mit Wasser. Warum macht man das?', 'multiple_choice', 'Man macht daraus einen Tee.;Man verbrennt sie an Heiligabend.;Wenn die Zweige an Weihnachten blühen, bringen sie Glück.;Sie sind ein Geschenk für den Nikolaus.', 'C'),
+(17, 1, '2026-12-04', '', '05kuchen.png', 'Aus welcher Stadt kommt der bekannte Weihnachtskuchen „Christstollen“? Und wie sieht er aus?', 'multiple_choice', 'Aus München – wie ein hoher Berg;Aus Dresden – wie das Jesuskind in weißen Tüchern;Aus Hamburg – wie ein Schiff;Aus Berlin – wie ein Stern', 'B'),
+(18, 1, '2026-12-07', '', '06pyramide.png', 'Aus welcher Region in Deutschland kommen die „Weihnachtspyramide“ und der Lichterbogen („Schwibbogen“)? Und was zeigt der Bogen?', 'multiple_choice', 'Aus dem Erzgebirge – den Eingang zu einem Bergwerk;Aus dem Schwarzwald – eine große Uhr;Vom Meer – einen Regenbogen;Aus Bayern – ein großes Stadttor', 'A'),
+(19, 1, '2026-12-08', '', '07nussknacker.png', 'Die Nussknacker aus Holz schauen oft sehr streng. Wen zeigen diese Figuren?', 'multiple_choice', 'Kinder aus Märchen;Piraten und Seeleute;Könige, Soldaten und Polizisten;Bäcker und Köche', 'C'),
+(20, 1, '2026-12-09', '', '08lebkuchen.png', 'In welchem Land steht das größte Lebkuchenhaus der Welt (ein Nachbau aus dem Film Kevin – Allein zu Haus)?', 'multiple_choice', 'In Deutschland;In Schweden;In Österreich;In den USA', 'D'),
+(21, 1, '2026-12-10', '', '09punsch.png', 'Woher kommt das Wort „Punsch“ (für die Zahl 5, weil das Getränk fünf Zutaten hat)? Und wie heißt der bekannte deutsche Punsch mit brennendem Zucker?', 'multiple_choice', 'Aus Indien; Feuerzangenbowle;Aus Schweden; Glögg;Aus Frankreich; Kakao;Aus Italien; Espresso', 'A'),
+(22, 1, '2026-12-11', '', '10wmarkt.png', 'In welcher Stadt in England gibt es den größten deutschen Weihnachtsmarkt außerhalb von Deutschland und Österreich?', 'multiple_choice', 'In Birmingham („Frankfurt Christmas Market“);In London;In Manchester;In Liverpool', 'A'),
+(23, 1, '2026-12-14', '', '11rodeln.png', 'Wann und wo wurde das Schlittenfahren (Rodeln) zum offiziellen Sport mit einem großen Rennen?', 'multiple_choice', '1924 in Frankreich;1896 in Griechenland;1883 in der Schweiz (in Davos);1905 in Österreich', 'C'),
+(24, 1, '2026-12-15', '', '12glück.png', 'Auf dem Weihnachtsmarkt in Nürnberg kauft man kleine, lustige Figuren (zum Beispiel Schornsteinfeger) als Glücksbringer. Woraus sind diese Figuren gemacht?', 'multiple_choice', 'Aus getrockneten Pflaumen (Zwetschgen);Aus frischen Äpfeln;Aus Orangen;Aus Bananen', 'A'),
+(25, 1, '2026-11-26', '', '11rodeln.png', 'Tegnapi kérdés', 'multiple_choice', 'Fel;Be;Ki;Le', '2'),
+(26, 1, '2026-11-27', '', '12glück.png', 'Mennyi?', 'multiple_choice', '30!;Mi mennyi?;30 tonna;42', '1');
 
 -- --------------------------------------------------------
 
@@ -172,7 +178,7 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT a táblához `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT a táblához `registrations`

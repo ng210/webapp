@@ -8,7 +8,7 @@ namespace AdventApi.Models
         public int Id { get; set; }
         [Column("registration_id")]
         public required int RegistrationId { get; set; }
-        [Column("question_id")] 
+        [Column("question_id")]
         public required int QuestionId { get; set; }
         [Column("answer")]
         public required string AnswerText { get; set; }
@@ -19,9 +19,9 @@ namespace AdventApi.Models
 
 
         [ForeignKey(nameof(QuestionId))]
-        public Question? Question { get; set; }
+        public required Question Question { get; set; }
 
         [ForeignKey(nameof(RegistrationId))]
-        public Registration? Player { get; set; }
+        public required Registration Player { get; set; }
     }
 }

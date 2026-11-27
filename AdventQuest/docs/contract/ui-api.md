@@ -42,9 +42,10 @@ Az aktuális játék konfigurációja.
   "name": "Adventi történelmi kvíz",
   "description": "Napi történelmi kérdések advent idején.",
   "asset_path": "/assets/history/",
-  "deadline_time": "20:00:00",
+  "publish_question": "6",
+  "deadline_delay": "8",
   "publish_correct_answers": true,
-  "publish_delay_hours": 8,
+  "publish_answer_delay": 8,
   "is_active": true
 }
 ```
